@@ -7,7 +7,8 @@ if(empty($_POST['id']) !=true && empty($_POST['casilla']) !=true ){
     $query2 = "INSERT INTO demos (iddemo, descripcion) VALUES ('".$_POST['id']."','".$_POST['casilla']."') ";
     
     if ($conex -> query($query2) === TRUE) {
-        echo "OK";
+        echo "OK"; 
+        closeConection($conex); 
         header('Location: selectmysql.php');
     } 
 }
@@ -21,6 +22,7 @@ if (mysqli_num_rows($result) > 0) {
   }
 }
 
+closeConection($conex); 
 ?>
 <html>
 	<head>

@@ -1,5 +1,5 @@
 <?php
-include_once("mysql.php");
+include_once("postgress.php");
   
 $conex= openconection();
 $iddemos = "";
@@ -7,23 +7,22 @@ $descripcion = "";
 
  
 if (empty($_GET['id']) !=true){
-  $query = "SELECT iddemo, descripcion FROM demos WHERE iddemo in (".$_GET['id'].")";
+  $query = "SELECT iddemo, descripcion FROM demo WHERE iddemo in (".$_GET['id'].")";
    
-  $result = mysqli_query($conex, $query);
-  if (mysqli_num_rows($result) > 0) { 
-    while($row = mysqli_fetch_assoc($result)) { 
+  $result = pg_query($conex, $query); 
+  $row = pg_fetch_assoc($result);
+  if ($row) {  
         $iddemos = $row["iddemo"];
-        $descripcion = $row["descripcion"];
-    }
+        $descripcion = $row["descripcion"]; 
   }
 }
 
 if(empty($_POST['id']) !=true && empty($_POST['casilla']) !=true ){
-    $query2 = "UPDATE demos SET descripcion = '".$_POST['casilla']."'  WHERE iddemo = '".$_POST['id']."'"; 
-    if ($conex -> query($query2) === TRUE) {
-        echo "OK";
-        header('Location: selectmysql.php');
-    } 
+    $query2 = "UPDATE demo SET descripcion = '".$_POST['casilla']."'  WHERE iddemo = '".$_POST['id']."'"; 
+     pg_query($query2);
+        echo "OK"; 
+        header('Location: selectpgsql.php');
+     
 }
 
 ?>
@@ -37,7 +36,7 @@ if(empty($_POST['id']) !=true && empty($_POST['casilla']) !=true ){
 		<meta name="keywords" content="Ejercicios, Soluciones, Prácticas, HTML5">
 	</head>
 	<body>
-    <form action="editarmysql.php" method="post">
+    <form action="editarpgsql.php" method="post">
         <fieldset>
             <legend>Suscribirse al Boletín</legend>
         
